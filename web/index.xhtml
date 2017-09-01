@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <link type="text/css" href="stilovi.css"/>
+    </h:head>
+    <h:body>
+        <div>
+            <p:button value="Prijava"/>
+            <p:button value="Registracija"/>
+            <p:button value="Promena lozinke"/>
+        </div>
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Levo"/>
+                <f:facet name="options">
+                    <p:commandButton value="Prijava" onclick="PF('prijavaDijalog').show()"/>
+                    <p:commandButton value="Registracija" onclick="PF('registracijaDijalog').show()"/>
+                    <p:commandButton value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
+                </f:facet>
+            </p:menubar>
+            <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true">
+                <h:panelGrid columns="2">
+                    Korisničko ime: <p:inputText value="m"/>
+                    Lozinka: <p:inputText value="m"/>
+                    <h:commandButton value="ASDF"/>
+                </h:panelGrid>
+            </p:dialog>
+            <p:dialog widgetVar="registracijaDijalog" header="Registracija" modal="true">
+                
+            </p:dialog>
+            <p:dialog widgetVar="promenaLozinkeDijalog" header="Promena lozinke" modal="true">
+                
+            </p:dialog>
+        </h:form>
+        Hello from Facelets
+        <br />
+        <hr/>
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+    </h:body>
+</html>
+
