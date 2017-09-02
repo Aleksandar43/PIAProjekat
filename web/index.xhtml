@@ -25,9 +25,10 @@
             </p:menubar>
             <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true">
                 <h:panelGrid columns="2">
-                    Korisničko ime: <p:inputText value="m"/>
-                    Lozinka: <p:inputText value="m"/>
-                    <h:commandButton value="ASDF"/>
+                    Korisničko ime: <p:inputText value="#{korisnikBean.korisnik.korisnickoIme}" required="true"/>
+                    Lozinka: <p:password value="#{korisnikBean.korisnik.lozinka}" required="true"/>
+                    <h:outputText value="#{korisnikBean.greska}" style="color: red"/>
+                    <h:commandButton value="Prijava" action="#{korisnikBean.login()}"/>
                 </h:panelGrid>
             </p:dialog>
             <p:dialog widgetVar="registracijaDijalog" header="Registracija" modal="true">
