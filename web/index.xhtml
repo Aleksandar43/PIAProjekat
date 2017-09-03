@@ -9,11 +9,6 @@
         <link type="text/css" href="stilovi.css"/>
     </h:head>
     <h:body>
-        <div>
-            <p:button value="Prijava"/>
-            <p:button value="Registracija"/>
-            <p:button value="Promena lozinke"/>
-        </div>
         <h:form>
             <p:menubar>
                 <p:menuitem value="Levo"/>
@@ -23,25 +18,36 @@
                     <p:commandButton value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
                 </f:facet>
             </p:menubar>
+            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
             <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true">
                 <h:panelGrid columns="2">
-                    Korisničko ime: <p:inputText value="#{korisnikBean.korisnik.korisnickoIme}" required="true"/>
-                    Lozinka: <p:password value="#{korisnikBean.korisnik.lozinka}" required="true"/>
+                    Korisničko ime: <p:inputText value="#{korisnikBean.korisnickoImePrijava}" required="true"/>
+                    Lozinka: <p:password value="#{korisnikBean.lozinkaPrijava}" required="true"/>
                     <h:outputText value="#{korisnikBean.greska}" style="color: red"/>
-                    <h:commandButton value="Prijava" action="#{korisnikBean.login()}"/>
+                    <p:commandButton update="growl" value="Prijava" actionListener="#{korisnikBean.prijava}" action="#{korisnikBean.login()}" oncomplete="handleLoginRequest(xhr, status, args)"/>
                 </h:panelGrid>
             </p:dialog>
             <p:dialog widgetVar="registracijaDijalog" header="Registracija" modal="true">
-                
+
             </p:dialog>
             <p:dialog widgetVar="promenaLozinkeDijalog" header="Promena lozinke" modal="true">
-                
+
             </p:dialog>
         </h:form>
         Hello from Facelets
         <br />
         <hr/>
         <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('prijavaDijalog').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('prijavaDijalog').hide();
+                    $('jhkgjk.xhtml').fadeOut();
+                }
+            }
+        </script>
     </h:body>
 </html>
 

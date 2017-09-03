@@ -5,14 +5,14 @@
  */
 package piaprojekat.beans;
 
-import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import org.hibernate.Criteria;
+import javax.faces.event.ActionEvent;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.primefaces.context.RequestContext;
 import piaprojekat.entiteti.Korisnik;
 import piaprojekat.util.HibernateUtil;
 
@@ -24,6 +24,7 @@ import piaprojekat.util.HibernateUtil;
 @SessionScoped
 public class KorisnikBean {
     private Korisnik korisnik=new Korisnik();
+    private String korisnickoImePrijava,lozinkaPrijava;
     private String greska;
     public KorisnikBean() {
     }
@@ -39,23 +40,50 @@ public class KorisnikBean {
     public String getGreska() {
         return greska;
     }
+
+    public String getKorisnickoImePrijava() {
+        return korisnickoImePrijava;
+    }
+
+    public void setKorisnickoImePrijava(String korisnickoImePrijava) {
+        this.korisnickoImePrijava = korisnickoImePrijava;
+    }
+
+    public String getLozinkaPrijava() {
+        return lozinkaPrijava;
+    }
+
+    public void setLozinkaPrijava(String lozinkaPrijava) {
+        this.lozinkaPrijava = lozinkaPrijava;
+    }
     
     public String login(){
+        if(korisnik!=null) return "loginTemp.xhtml?faces-redirect=true";
+        else return null;
+    }
+    
+    public void prijava(ActionEvent e){
+        boolean loggedIn;
+        FacesMessage message;
+        RequestContext context=RequestContext.getCurrentInstance();
         greska="";
-        System.out.println("Korisnik: "+korisnik.getKorisnickoIme());
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-//        Criteria c=session.createCriteria(Korisnik.class);
-//        c.add(Restrictions.eq("korisnickoIme", korisnik.getKorisnickoIme()));
-//        Korisnik k=(Korisnik) c.uniqueResult();
-        Query query = session.createSQLQuery("select * from korisnik where `korisničko_ime`='"+korisnik.getKorisnickoIme()+"'");
-        Object k=query.uniqueResult();
-        if(k==null){
-            greska="Pogrešno";
-            return "index";
+        Query query2 = session.createSQLQuery("select * from korisnik where `korisničko_ime`='"+korisnickoImePrijava+"' and `lozinka`='"+lozinkaPrijava+"'").addEntity(Korisnik.class);
+        Korisnik k2=(Korisnik) query2.uniqueResult();
+        korisnik=k2;
+        if(korisnik!=null) {
+            loggedIn = true;
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", korisnik.getKorisnickoIme());
+            korisnik=k2;
+        } else {
+            System.out.println("k=null");
+            loggedIn = false;
+            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         }
-        //korisnik=k;
-        return "loginTemp.xhtml?faces-redirect=true";
+         
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        context.addCallbackParam("loggedIn", loggedIn);
     }
     
     public String logout(){

@@ -122,4 +122,9 @@ public class Korisnik implements Serializable {
     public void setIdKompanije(int idKompanije) {
         this.idKompanije = idKompanije;
     }
+
+    @Override
+    public String toString() {
+        return "Korisnik{" + "id=" + id + ", korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + ", ime=" + ime + ", prezime=" + prezime + ", pol=" + pol + ", datumRodjenja=" + datumRodjenja + ", eMail=" + eMail + ", tip=" + tip + ", idKompanije=" + idKompanije + '}';
+    }
 }
