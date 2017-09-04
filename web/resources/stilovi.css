@@ -8,4 +8,6 @@ and open the template in the editor.
     Author     : Aleksandar
 */
 
-body{background: #880000};
+body{background: linear-gradient(to bottom right,lightblue,blue)};
+
+.menidugmad{background-color: green; color: lightgrey}

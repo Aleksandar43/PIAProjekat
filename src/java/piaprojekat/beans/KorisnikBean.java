@@ -5,6 +5,9 @@
  */
 package piaprojekat.beans;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -22,7 +25,7 @@ import piaprojekat.util.HibernateUtil;
  */
 @ManagedBean
 @SessionScoped
-public class KorisnikBean {
+public class KorisnikBean implements Serializable{
     private Korisnik korisnik=new Korisnik();
     private String korisnickoImePrijava,lozinkaPrijava;
     private String greska;
@@ -58,7 +61,7 @@ public class KorisnikBean {
     }
     
     public String login(){
-        if(korisnik!=null) return "loginTemp.xhtml?faces-redirect=true";
+        if(korisnik!=null) return korisnik.getTip()+".xhtml?faces-redirect=true";
         else return null;
     }
     
@@ -72,12 +75,14 @@ public class KorisnikBean {
         Query query2 = session.createSQLQuery("select * from korisnik where `korisničko_ime`='"+korisnickoImePrijava+"' and `lozinka`='"+lozinkaPrijava+"'").addEntity(Korisnik.class);
         Korisnik k2=(Korisnik) query2.uniqueResult();
         korisnik=k2;
+        session.close();
         if(korisnik!=null) {
             loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", korisnik.getKorisnickoIme());
             korisnik=k2;
         } else {
             System.out.println("k=null");
+            greska="Neispravni podaci";
             loggedIn = false;
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         }
@@ -90,5 +95,31 @@ public class KorisnikBean {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         korisnik=null;
         return "index.xhtml?faces-redirect=true";
+    }
+    
+    public String registracija(){ //f-ja radi, ne pozivati ponovo!
+        System.out.println("Dugme kliknuto");
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Korisnik k=new Korisnik();
+        k.setKorisnickoIme("APilot1");
+        k.setLozinka("Aqwe123!");
+        k.setIme("Antonio");
+        k.setPrezime("Antonelli");
+        k.setPol("M");
+        k.setTip("pilot");
+        k.seteMail("antonellia@alitalia.com");
+        Date datum=new Date();
+        Calendar.getInstance().set(1980, 12, 30);
+        datum.setTime(Calendar.getInstance().get(Calendar.MILLISECOND));
+        k.setDatumRodjenja(datum);
+        k.setIdKompanije(3);
+        System.out.println("Korisnik napunjen");
+        session.save(k);
+        System.out.println("Korisnik sačuvan");
+        session.getTransaction().commit();
+        System.out.println("Korisnik poslat (commit)");
+        session.close();
+        return "index";
     }
 }

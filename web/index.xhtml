@@ -5,30 +5,31 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
-        <link type="text/css" href="stilovi.css"/>
+        <title>Avio ETF - sistem za evidenciju letova</title>
+        <h:outputStylesheet name="stilovi.css"/>
     </h:head>
     <h:body>
         <h:form>
             <p:menubar>
                 <p:menuitem value="Levo"/>
                 <f:facet name="options">
-                    <p:commandButton value="Prijava" onclick="PF('prijavaDijalog').show()"/>
-                    <p:commandButton value="Registracija" onclick="PF('registracijaDijalog').show()"/>
-                    <p:commandButton value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Prijava" onclick="PF('prijavaDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Registracija" onclick="PF('registracijaDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
                 </f:facet>
             </p:menubar>
-            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-            <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true">
+            <p:growl id="growl" sticky="true" life="3000" />
+            <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true" showEffect="fade" hideEffect="fade">
                 <h:panelGrid columns="2">
-                    Korisničko ime: <p:inputText value="#{korisnikBean.korisnickoImePrijava}" required="true"/>
-                    Lozinka: <p:password value="#{korisnikBean.lozinkaPrijava}" required="true"/>
-                    <h:outputText value="#{korisnikBean.greska}" style="color: red"/>
-                    <p:commandButton update="growl" value="Prijava" actionListener="#{korisnikBean.prijava}" action="#{korisnikBean.login()}" oncomplete="handleLoginRequest(xhr, status, args)"/>
+                    Korisničko ime: <p:inputText label="korisničko_ime" value="#{korisnikBean.korisnickoImePrijava}" required="true"/>
+                    Lozinka: <p:password label="lozinka" value="#{korisnikBean.lozinkaPrijava}" required="true"/>
+                    <h:outputText id="greska" value="#{korisnikBean.greska}" style="color: red"/>
+                    <p:commandButton update="growl greska" value="Prijava" actionListener="#{korisnikBean.prijava}" action="#{korisnikBean.login()}" oncomplete="handleLoginRequest(xhr, status, args)" id="prijavadugme"/>
+                    <p:defaultCommand target="prijavadugme"/>
                 </h:panelGrid>
             </p:dialog>
             <p:dialog widgetVar="registracijaDijalog" header="Registracija" modal="true">
-
+                <p:commandButton value="Klikni me" action="#{korisnikBean.registracija()}"/>
             </p:dialog>
             <p:dialog widgetVar="promenaLozinkeDijalog" header="Promena lozinke" modal="true">
 

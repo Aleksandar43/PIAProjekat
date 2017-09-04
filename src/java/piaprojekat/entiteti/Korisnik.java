@@ -36,12 +36,14 @@ public class Korisnik implements Serializable {
     @Column(name = "datum_rođenja")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datumRodjenja;
-    @Column(name = "e-mail")
+    @Column(name = "`e-mail`")
     private String eMail;
     @Column(name = "tip")
     private String tip;
     @Column(name = "id_kompanije")
-    private int idKompanije;
+    private Integer idKompanije;
+    @Column(name = "odobren")
+    private int odobren;
     
     public int getId() {
         return id;
@@ -115,16 +117,24 @@ public class Korisnik implements Serializable {
         this.tip = tip;
     }
 
-    public int getIdKompanije() {
+    public Integer getIdKompanije() {
         return idKompanije;
     }
 
-    public void setIdKompanije(int idKompanije) {
+    public void setIdKompanije(Integer idKompanije) {
         this.idKompanije = idKompanije;
+    }
+
+    public int getOdobren() {
+        return odobren;
+    }
+
+    public void setOdobren(int odobren) {
+        this.odobren = odobren;
     }
 
     @Override
     public String toString() {
-        return "Korisnik{" + "id=" + id + ", korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + ", ime=" + ime + ", prezime=" + prezime + ", pol=" + pol + ", datumRodjenja=" + datumRodjenja + ", eMail=" + eMail + ", tip=" + tip + ", idKompanije=" + idKompanije + '}';
+        return "Korisnik{" + "id=" + id + ", korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + ", ime=" + ime + ", prezime=" + prezime + ", pol=" + pol + ", datumRodjenja=" + datumRodjenja + ", eMail=" + eMail + ", tip=" + tip + ", idKompanije=" + idKompanije + ", odobren=" + odobren + '}';
     }
 }
