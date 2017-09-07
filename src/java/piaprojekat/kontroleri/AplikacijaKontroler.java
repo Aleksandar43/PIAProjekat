@@ -59,6 +59,7 @@ public class AplikacijaKontroler {
         }
         brojGresakaKodRegistracije=0;
         poljaZaRegistraciju.setLozinka("");
+        poljaZaRegistraciju.setKorisnickoIme("");
         return adresa;
     }
 

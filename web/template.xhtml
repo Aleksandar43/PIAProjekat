@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+<!--        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>-->
+         <title>Avio ETF - sistem za evidenciju letova</title>
+        <h:outputStylesheet name="stilovi.css"/>
+    </h:head>
+
+    <body>
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Levo"/>
+                <f:facet name="options">
+                    <p:commandButton class="menidugmad" value="Prijava" onclick="PF('prijavaDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Registracija" onclick="PF('registracijaDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+<!--        <p:growl id="growl" sticky="true" life="3000" />-->
+        <h:form id="prijavaMeni">
+            <p:dialog widgetVar="prijavaDijalog" header="Prijava" modal="true" showEffect="fade" hideEffect="fade">
+                <h:panelGrid columns="3">
+                    Korisničko ime: <p:inputText value="#{korisnikKontroler.korisnickoImePrijava}" required="true" requiredMessage="Korisničko ime nije popunjeno" id="korisničko_ime"/>
+                    <p:message for="korisničko_ime" id="poruka_k"/>
+                    Lozinka: <p:password value="#{korisnikKontroler.lozinkaPrijava}" required="true" requiredMessage="Lozinka nije popunjena" id="lozinka"/>
+                    <p:message for="lozinka" id="poruka_l"/>
+                    <p:row>
+                        <p:message id="greska" for="prijavaDugme" showDetail="true" showSummary="true"/>
+                    </p:row>
+                    <p:row>
+                        <p:commandButton update="greska poruka_k poruka_l" value="Prijava" actionListener="#{korisnikKontroler.prijava}" action="#{korisnikKontroler.login()}" oncomplete="handleLoginRequest(xhr, status, args)" id="prijavaDugme"/>
+                    </p:row>
+                    <p:defaultCommand target="prijavaDugme"/>
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="registracijaMeni">
+            <p:dialog widgetVar="registracijaDijalog" header="Registracija" modal="true" showEffect="fade" hideEffect="fade">
+                <p:panelGrid columns="2">
+                    <p:panelGrid columns="2">
+                        Ime: <p:inputText value="#{aplikacijaKontroler.poljaZaRegistraciju.ime}" required="true" requiredMessage="Ime nije uneto"/>
+                        Prezime: <p:inputText value="#{aplikacijaKontroler.poljaZaRegistraciju.prezime}" required="true" requiredMessage="Prezime nije uneto"/>
+                        Pol: <p:selectOneRadio value="#{aplikacijaKontroler.poljaZaRegistraciju.pol}" required="true" requiredMessage="Pol nije označen">
+                            <f:selectItem itemLabel="Muški" itemValue="M"/>
+                            <f:selectItem itemLabel="Ženski" itemValue="Ž"/>
+                        </p:selectOneRadio>
+                        Datum rođenja: <p:calendar value="#{aplikacijaKontroler.poljaZaRegistraciju.datumRodjenja}" pattern="dd.MM.yyyy." required="true" requiredMessage="Datum rođenja nije unet"/>
+                        Avio-kompanija: <p:selectOneMenu value="#{aplikacijaKontroler.poljaZaRegistraciju.idKompanije}">
+                            <c:forEach items="#{aplikacijaKontroler.avioKompanije}" var="a">
+                                <f:selectItem itemValue="#{a.id}" itemLabel="#{a.ime}"/> 
+                            </c:forEach>
+                        </p:selectOneMenu>
+                        Radno mesto: <p:selectOneMenu value="#{aplikacijaKontroler.poljaZaRegistraciju.tip}">
+                            <!--select distinct(tip) from korisnik, ali bez administratora-->
+                            <f:selectItem itemLabel="Pilot" itemValue="pilot"/>
+                            <f:selectItem itemLabel="Stjuardesa" itemValue="stjuardesa"/>
+                            <f:selectItem itemLabel="Radnik" itemValue="radnik"/>
+                        </p:selectOneMenu>
+                        E-mail: <p:inputText value="#{aplikacijaKontroler.poljaZaRegistraciju.eMail}" required="true" requiredMessage="E-mail nije unet"/>
+                        Korisničko ime: <p:inputText value="#{aplikacijaKontroler.poljaZaRegistraciju.korisnickoIme}" required="true" requiredMessage="Korisničko ime nije uneto"/>
+                        <!--Provera lozinke!!!-->
+                        Lozinka: <p:password id="loz1" value="#{aplikacijaKontroler.poljaZaRegistraciju.lozinka}" required="true" requiredMessage="Lozinka nije uneta" match="loz2"/>
+                        Ponovljena lozinka: <p:password id="loz2" value="#{aplikacijaKontroler.poljaZaRegistraciju.lozinka}" required="true"/>
+                        <p:commandButton value="Registracija" action="#{aplikacijaKontroler.registracija()}" oncomplete="handleLoginRequestRegistracija(xhr, status, args)" update="loz1 loz2"/>
+                    </p:panelGrid>
+                    <p:panel header="Uslovi za lozinku" style="vertical-align: top">
+                        <ul>
+                            <li>Najmanje 8, a najviše 10 karaktera</li>
+                            <li>Mora imati bar 1 veliko slovo, 3 mala slova, 1 cifru i 1 specijalni znak</li>
+                            <li>Prvi karakter mora biti slovo (veliko ili malo)</li>
+                            <li>Nijedan karakter ne sme biti 3 puta uzastopno</li>
+                        </ul>
+                    </p:panel>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form>
+            <p:dialog widgetVar="promenaLozinkeDijalog" header="Promena lozinke" modal="true">
+                <!--Promena lozinke!!!-->
+            </p:dialog>
+        </h:form>
+        <div id="content">
+            <ui:insert name="sadrzaj">Ovde bi trebalo da bude sadržaj</ui:insert>
+        </div>
+        <br />
+        <p:messages autoUpdate="true" showDetail="true" />
+        <hr/>
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('prijavaDijalog').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    
+                }
+            }
+            function handleLoginRequestRegistracija(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('registracijaDijalog').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('registracijaDijalog').hide();
+                    $('xyz').fadeOut();
+                }
+            }
+        </script>
+    </body>
+
+</html>
