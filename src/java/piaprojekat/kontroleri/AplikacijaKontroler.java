@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
@@ -46,6 +47,8 @@ public class AplikacijaKontroler {
         System.out.println("Dugme kliknuto");
         proveraKorisnickogImena();
         proveraDatumaRodjenja();
+        proveraEMaila();
+        proveraLozinke();
         if (brojGresakaKodRegistracije==0) {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -84,6 +87,35 @@ public class AplikacijaKontroler {
         if(datumRodjenja.after(pre18godina)){
             brojGresakaKodRegistracije++;
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrovani korisnici moraju imati bar 18 godina", "Registrovani korisnici moraju imati bar 18 godina"));
+        }
+    }
+    
+    public void proveraEMaila(){
+        String eMail=poljaZaRegistraciju.geteMail();
+        if(!Pattern.matches("[\\w.]+@\\w+\\.\\w+", eMail)){
+            brojGresakaKodRegistracije++;
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Neispravna e-mail adresa", "Neispravna e-mail adresa"));
+        }
+    }
+    
+    public void proveraLozinke(){
+        String lozinka=poljaZaRegistraciju.getLozinka();
+        String regexDuzina=".{8,10}";
+        String regexVelikoSlovo=".*[A-Z].*";
+        String regexMalaSlova=".*[a-z].*[a-z].*[a-z].*";
+        String regexCifra=".*[0-9].*";
+        String regexSpecijalniZnak=".*[^A-Za-z0-9].*";
+        String regexPrviZnak=".*[A-Za-z].*";
+        String regex3UzastopnaZnaka=".*(.)\\1\\1.*";
+        if(!(Pattern.matches(regexDuzina, lozinka)
+                && Pattern.matches(regexVelikoSlovo, lozinka)
+                && Pattern.matches(regexMalaSlova, lozinka)
+                && Pattern.matches(regexCifra, lozinka)
+                && Pattern.matches(regexSpecijalniZnak, lozinka)
+                && Pattern.matches(regexPrviZnak, lozinka)
+                && !Pattern.matches(regex3UzastopnaZnaka, lozinka))){
+            brojGresakaKodRegistracije++;
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Neispravna lozinka", "Neispravna lozinka"));
         }
     }
 
