@@ -7,7 +7,7 @@
         <title>Stranica za stjuardese</title>
     </h:head>
     <h:body>
-        Prijavljen: stjuardesa #{korisnikBean.korisnik.korisnickoIme}
-        <h:form><p:commandLink value="Odjava" action="#{korisnikBean.logout()}"/></h:form>
+        Prijavljen: stjuardesa #{korisnikKontroler.korisnik.korisnickoIme}
+        <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>
     </h:body>
 </html>

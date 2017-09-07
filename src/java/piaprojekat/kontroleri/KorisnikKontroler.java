@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package piaprojekat.beans;
+package piaprojekat.kontroleri;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -25,11 +25,11 @@ import piaprojekat.util.HibernateUtil;
  */
 @ManagedBean
 @SessionScoped
-public class KorisnikBean implements Serializable{
-    private Korisnik korisnik=new Korisnik();
+public class KorisnikKontroler implements Serializable{
+    private Korisnik korisnik;
     private String korisnickoImePrijava,lozinkaPrijava;
     private String greska;
-    public KorisnikBean() {
+    public KorisnikKontroler() {
     }
 
     public Korisnik getKorisnik() {
@@ -67,7 +67,7 @@ public class KorisnikBean implements Serializable{
     
     public void prijava(ActionEvent e){
         boolean loggedIn;
-        FacesMessage message;
+        FacesMessage message,message2 = null;
         RequestContext context=RequestContext.getCurrentInstance();
         greska="";
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -79,15 +79,16 @@ public class KorisnikBean implements Serializable{
         if(korisnik!=null) {
             loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", korisnik.getKorisnickoIme());
-            korisnik=k2;
         } else {
             System.out.println("k=null");
             greska="Neispravni podaci";
             loggedIn = false;
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+            message2 = new FacesMessage(FacesMessage.SEVERITY_WARN, "Greška", "Pogrešni podaci");
         }
          
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        //FacesContext.getCurrentInstance().addMessage(null, message);
+        if(message2!=null) FacesContext.getCurrentInstance().addMessage("prijavaMeni:prijavaDugme", message2);
         context.addCallbackParam("loggedIn", loggedIn);
     }
     
@@ -95,31 +96,5 @@ public class KorisnikBean implements Serializable{
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         korisnik=null;
         return "index.xhtml?faces-redirect=true";
-    }
-    
-    public String registracija(){ //f-ja radi, ne pozivati ponovo!
-        System.out.println("Dugme kliknuto");
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Korisnik k=new Korisnik();
-        k.setKorisnickoIme("APilot1");
-        k.setLozinka("Aqwe123!");
-        k.setIme("Antonio");
-        k.setPrezime("Antonelli");
-        k.setPol("M");
-        k.setTip("pilot");
-        k.seteMail("antonellia@alitalia.com");
-        Date datum=new Date();
-        Calendar.getInstance().set(1980, 12, 30);
-        datum.setTime(Calendar.getInstance().get(Calendar.MILLISECOND));
-        k.setDatumRodjenja(datum);
-        k.setIdKompanije(3);
-        System.out.println("Korisnik napunjen");
-        session.save(k);
-        System.out.println("Korisnik sačuvan");
-        session.getTransaction().commit();
-        System.out.println("Korisnik poslat (commit)");
-        session.close();
-        return "index";
-    }
+    }    
 }

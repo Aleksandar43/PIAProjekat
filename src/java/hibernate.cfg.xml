@@ -51,5 +51,6 @@ Contributor(s):
     <property name="hibernate.connection.useUnicode">true</property>
 <!--    <property name="hbm2ddl.auto">update</property>-->
     <mapping class="piaprojekat.entiteti.Korisnik"/>
+    <mapping class="piaprojekat.entiteti.AvioKompanija"/>
   </session-factory>
 </hibernate-configuration>
