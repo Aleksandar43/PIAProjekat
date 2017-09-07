@@ -20,9 +20,10 @@
             <p:menubar>
                 <p:menuitem value="Levo"/>
                 <f:facet name="options">
-                    <p:commandButton class="menidugmad" value="Prijava" onclick="PF('prijavaDijalog').show()"/>
-                    <p:commandButton class="menidugmad" value="Registracija" onclick="PF('registracijaDijalog').show()"/>
-                    <p:commandButton class="menidugmad" value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()"/>
+                    <p:commandButton class="menidugmad" value="Prijava" onclick="PF('prijavaDijalog').show()" rendered="#{korisnikKontroler.korisnik==null}"/>
+                    <p:commandButton class="menidugmad" value="Registracija" onclick="PF('registracijaDijalog').show()" rendered="#{korisnikKontroler.korisnik==null}"/>
+                    <p:commandButton class="menidugmad" value="Promena lozinke" onclick="PF('promenaLozinkeDijalog').show()" rendered="#{korisnikKontroler.korisnik==null}"/>
+                    <p:commandButton class="menidugmad" value="Odjava" action="#{korisnikKontroler.logout()}" rendered="#{korisnikKontroler.korisnik!=null}"/>
                 </f:facet>
             </p:menubar>
         </h:form>
