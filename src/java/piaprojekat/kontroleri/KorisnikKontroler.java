@@ -77,8 +77,13 @@ public class KorisnikKontroler implements Serializable{
         korisnik=k2;
         session.close();
         if(korisnik!=null) {
-            loggedIn = true;
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", korisnik.getKorisnickoIme());
+            if (korisnik.getOdobren()==1) {
+                loggedIn = true;
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", korisnik.getKorisnickoIme());
+            } else {
+                loggedIn=false;
+                message2 = new FacesMessage(FacesMessage.SEVERITY_WARN, "Registracija nije odobrena", "Administrator još nije odobrio vašu registraciju. Molimo vas da pokušate da se prijavite kasnije");
+            }
         } else {
             System.out.println("k=null");
             greska="Neispravni podaci";
@@ -95,6 +100,6 @@ public class KorisnikKontroler implements Serializable{
     public String logout(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         korisnik=null;
-        return "index.xhtml?faces-redirect=true";
+        return "index";
     }    
 }

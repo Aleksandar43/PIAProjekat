@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -54,27 +55,20 @@ public class AplikacijaKontroler {
             session.getTransaction().commit();
             System.out.println("Korisnik poslat (commit)");
             session.close();
-            adresa="index.xhtml?faces-redirect=true";
+            adresa="index";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Zahtev za registraciju uspešna", "Zahtev za registraciju je uspešno podnet. Molimo vas da sačekate da administrator odobri zahtev."));
         }
         brojGresakaKodRegistracije=0;
         poljaZaRegistraciju.setLozinka("");
-        poljaZaRegistraciju.setKorisnickoIme("");
         return adresa;
     }
 
-    public List<AvioKompanija> getAvioKompanije(){
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Query query=session.createSQLQuery("select * from aviokompanija").addEntity(AvioKompanija.class);
-        List list = query.list();
-        return list;
-    }
-    
     public void proveraKorisnickogImena(){
         String ki=poljaZaRegistraciju.getKorisnickoIme();
         Session session=HibernateUtil.getSessionFactory().openSession();
         Query query=session.createSQLQuery("select * from korisnik where korisničko_ime='"+ki+"'").addEntity(Korisnik.class);
         List list = query.list();
+        session.close();
         if(list.size()>0){
             brojGresakaKodRegistracije++;
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, "Korisničko ime zauzeto", null));
@@ -82,7 +76,7 @@ public class AplikacijaKontroler {
     }
     
     public void proveraDatumaRodjenja(){
-        Date datumRodjenja=(Date) poljaZaRegistraciju.getDatumRodjenja();
+        Date datumRodjenja=poljaZaRegistraciju.getDatumRodjenja();
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());
         c.add(Calendar.YEAR, -18);
@@ -91,5 +85,51 @@ public class AplikacijaKontroler {
             brojGresakaKodRegistracije++;
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registrovani korisnici moraju imati bar 18 godina", "Registrovani korisnici moraju imati bar 18 godina"));
         }
+    }
+
+    public void odobriKorisnika(ActionEvent event){
+        Korisnik k=(Korisnik) event.getComponent().getAttributes().get("korisnik");
+        k.setOdobren(1);
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.update(k);
+        session.getTransaction().commit();
+        session.close();
+    }
+    
+    public String odobri(Korisnik k){
+        k.setOdobren(1);
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.update(k);
+        session.getTransaction().commit();
+        session.close();
+        return "administrator";
+    }
+    
+    public String odbij(Korisnik k){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Object o = session.load(Korisnik.class, k.getId());
+        session.delete(o);
+        session.getTransaction().commit();
+        session.close();
+        return "administrator";
+    }
+    
+    public List<AvioKompanija> getAvioKompanije(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        Query query=session.createSQLQuery("select * from aviokompanija").addEntity(AvioKompanija.class);
+        List list = query.list();
+        session.close();
+        return list;
+    }
+    
+    public List<Korisnik> getNeodobreniKorisnici(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        Query query=session.createSQLQuery("select * from korisnik where odobren=0").addEntity(Korisnik.class);
+        List list = query.list();
+        session.close();
+        return list;
     }
 }
