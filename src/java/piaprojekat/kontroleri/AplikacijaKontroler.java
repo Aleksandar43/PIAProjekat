@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import piaprojekat.entiteti.Aerodrom;
 import piaprojekat.entiteti.AvioKompanija;
 import piaprojekat.entiteti.Korisnik;
 import piaprojekat.util.HibernateUtil;
@@ -31,6 +32,7 @@ import piaprojekat.util.HibernateUtil;
 public class AplikacijaKontroler {
     private Korisnik poljaZaRegistraciju=new Korisnik();
     private int brojGresakaKodRegistracije=0;
+    private Aerodrom noviAerodrom=new Aerodrom();
     public AplikacijaKontroler() {
     }
 
@@ -40,6 +42,14 @@ public class AplikacijaKontroler {
 
     public void setPoljaZaRegistraciju(Korisnik poljaZaRegistraciju) {
         this.poljaZaRegistraciju = poljaZaRegistraciju;
+    }
+
+    public Aerodrom getNoviAerodrom() {
+        return noviAerodrom;
+    }
+
+    public void setNoviAerodrom(Aerodrom noviAerodrom) {
+        this.noviAerodrom = noviAerodrom;
     }
     
     public String registracija(){
@@ -119,16 +129,6 @@ public class AplikacijaKontroler {
         }
     }
 
-    public void odobriKorisnika(ActionEvent event){
-        Korisnik k=(Korisnik) event.getComponent().getAttributes().get("korisnik");
-        k.setOdobren(1);
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.update(k);
-        session.getTransaction().commit();
-        session.close();
-    }
-    
     public String odobri(Korisnik k){
         k.setOdobren(1);
         Session session=HibernateUtil.getSessionFactory().openSession();
@@ -163,5 +163,26 @@ public class AplikacijaKontroler {
         List list = query.list();
         session.close();
         return list;
+    }
+    
+    public String dodajAerodrom(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        noviAerodrom.setIataKod(noviAerodrom.getIataKod().toUpperCase());
+        Query provera=session.createSQLQuery("select * from aerodrom where iata_kod='"+noviAerodrom.getIataKod()+"'");
+        if (provera.uniqueResult()==null) {
+            session.save(noviAerodrom);
+            session.getTransaction().commit();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Aerodrom uspešno dodat", "Aerodrom uspešno dodat"));
+            noviAerodrom.setIataKod("");
+            noviAerodrom.setNaziv("");
+            noviAerodrom.setGrad("");
+            noviAerodrom.setDrzava("");
+            noviAerodrom.setBrojPisti(0);
+        } else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aerodrom sa kodom \""+noviAerodrom.getIataKod()+"\" već postoji u bazi", "Aerodrom sa kodom \""+noviAerodrom.getIataKod()+"\" već postoji u bazi"));
+        }
+        session.close();
+        return "administrator";
     }
 }

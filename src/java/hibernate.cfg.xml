@@ -52,5 +52,6 @@ Contributor(s):
 <!--    <property name="hbm2ddl.auto">update</property>-->
     <mapping class="piaprojekat.entiteti.Korisnik"/>
     <mapping class="piaprojekat.entiteti.AvioKompanija"/>
+    <mapping class="piaprojekat.entiteti.Aerodrom"/>
   </session-factory>
 </hibernate-configuration>

@@ -11,20 +11,32 @@
     <body>
         <ui:composition template="./template.xhtml">
             <ui:define name="sadrzaj">
-                <p:panel header="Zahtevi za registraciju">
+                <p:panel id="zahteviPanel" header="Zahtevi za registraciju">
                     <p:dataTable value="#{aplikacijaKontroler.neodobreniKorisnici}" var="k">
                         <f:facet name="header">Zahtevi za registraciju</f:facet>
                         <p:column headerText="Korisničko ime">
                             #{k.korisnickoIme}
                         </p:column>
                         <p:column>
-                            <p:commandButton value="Odobri" action="#{aplikacijaKontroler.odobri(k)}"/>
+                            <h:form><p:commandButton value="Odobri" action="#{aplikacijaKontroler.odobri(k)}"/></h:form>
                         </p:column>
                         <p:column>
-                            <p:commandButton value="Odbij" action="#{aplikacijaKontroler.odbij(k)}"/>
+                            <h:form><p:commandButton value="Odbij" action="#{aplikacijaKontroler.odbij(k)}"/></h:form>
                         </p:column>
                     </p:dataTable>
                 </p:panel>
+                <h:form>
+                    <p:panel id="noviAerodromPanel" header="Dodavanje aerodroma">
+                        <p:panelGrid id="noviAerodromDataGrid" columns="2">
+                            IATA kod: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.iataKod}" required="true" maxlength="3"/>
+                            Naziv: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.naziv}" required="true"/>
+                            Grad: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.grad}" required="true"/>
+                            Država: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.drzava}" required="true"/>
+                            Broj pisti: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.brojPisti}" required="true"/>
+                        </p:panelGrid>
+                        <p:commandButton id="noviAerodromDugme" value="Dodaj" action="#{aplikacijaKontroler.dodajAerodrom()}"/>
+                    </p:panel>
+                </h:form>
                 <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>
             </ui:define>
         </ui:composition>

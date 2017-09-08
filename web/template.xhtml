@@ -94,9 +94,10 @@
             <ui:insert name="sadrzaj">Ovde bi trebalo da bude sadržaj</ui:insert>
         </div>
         <br />
-        <p:messages autoUpdate="true" showDetail="true" />
+<!--        <p:messages id="porukeDonjiDeoEkrana" autoUpdate="true" showDetail="true" closable="true"/>-->
         <hr/>
         <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        <div id="porukeDonjiDeoEkrana"><p:messages autoUpdate="true" showDetail="true" showSummary="false" closable="true"/></div>
         <script type="text/javascript">
             function handleLoginRequest(xhr, status, args) {
                 if (args.validationFailed || !args.loggedIn) {

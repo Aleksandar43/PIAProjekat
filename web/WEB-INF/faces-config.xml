@@ -12,7 +12,7 @@
         <navigation-case>
             <from-outcome>administrator</from-outcome>
             <to-view-id>administrator.xhtml</to-view-id>
-            <redirect/>
+
         </navigation-case>
     </navigation-rule>
 </faces-config>
