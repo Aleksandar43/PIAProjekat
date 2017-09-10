@@ -33,6 +33,7 @@ public class AplikacijaKontroler {
     private Korisnik poljaZaRegistraciju=new Korisnik();
     private int brojGresakaKodRegistracije=0;
     private Aerodrom noviAerodrom=new Aerodrom();
+    private AvioKompanija novaAvioKompanija=new AvioKompanija();
     public AplikacijaKontroler() {
     }
 
@@ -50,6 +51,14 @@ public class AplikacijaKontroler {
 
     public void setNoviAerodrom(Aerodrom noviAerodrom) {
         this.noviAerodrom = noviAerodrom;
+    }
+
+    public AvioKompanija getNovaAvioKompanija() {
+        return novaAvioKompanija;
+    }
+
+    public void setNovaAvioKompanija(AvioKompanija novaAvioKompanija) {
+        this.novaAvioKompanija = novaAvioKompanija;
     }
     
     public String registracija(){
@@ -151,7 +160,7 @@ public class AplikacijaKontroler {
     
     public List<AvioKompanija> getAvioKompanije(){
         Session session=HibernateUtil.getSessionFactory().openSession();
-        Query query=session.createSQLQuery("select * from aviokompanija").addEntity(AvioKompanija.class);
+        Query query=session.createSQLQuery("select * from aviokompanija order by ime").addEntity(AvioKompanija.class);
         List list = query.list();
         session.close();
         return list;
@@ -181,6 +190,26 @@ public class AplikacijaKontroler {
             noviAerodrom.setBrojPisti(0);
         } else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aerodrom sa kodom \""+noviAerodrom.getIataKod()+"\" već postoji u bazi", "Aerodrom sa kodom \""+noviAerodrom.getIataKod()+"\" već postoji u bazi"));
+        }
+        session.close();
+        return "administrator";
+    }
+    
+    public String dodajAvioKompaniju(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query provera=session.createSQLQuery("select * from aviokompanija where ime='"+novaAvioKompanija.getIme()+"'");
+        if (provera.uniqueResult()==null) {
+            session.save(novaAvioKompanija);
+            session.getTransaction().commit();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Avio-kompanija uspešno dodata", "Avio-kompanija uspešno dodata"));
+            novaAvioKompanija.setIme("");
+            novaAvioKompanija.setAdresa("");
+            novaAvioKompanija.setDrzava("");
+            novaAvioKompanija.setVebsajt("");
+            novaAvioKompanija.seteMail("");
+        } else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Avio-kompanija \""+novaAvioKompanija.getIme()+"\" već postoji u bazi", "Avio-kompanija \""+novaAvioKompanija.getIme()+"\" već postoji u bazi"));
         }
         session.close();
         return "administrator";

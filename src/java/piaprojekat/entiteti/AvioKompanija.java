@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class AvioKompanija implements Serializable{
     @Id
     private int id;
-    @Column
+    @Column(unique = true)
     private String ime;
     @Column
     private String adresa;
@@ -24,7 +24,7 @@ public class AvioKompanija implements Serializable{
     private String drzava;
     @Column
     private String vebsajt;
-    @Column(name = "e-mail")
+    @Column(name = "`e-mail`")
     private String eMail;
 
     public int getId() {

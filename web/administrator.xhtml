@@ -37,6 +37,18 @@
                         <p:commandButton id="noviAerodromDugme" value="Dodaj" action="#{aplikacijaKontroler.dodajAerodrom()}"/>
                     </p:panel>
                 </h:form>
+                <h:form>
+                    <p:panel id="novaAvioKompanijaPanel" header="Dodavanje avio-kompanije">
+                        <p:panelGrid id="novaAvioKompanijaDataGrid" columns="2">
+                            Ime: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.ime}" required="true"/>
+                            Adresa: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.adresa}"/>
+                            Država: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.drzava}"/>
+                            Vebsajt: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.vebsajt}"/>
+                            E-mail: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.eMail}"/>
+                        </p:panelGrid>
+                        <p:commandButton id="novaAvioKompanijaDugme" value="Dodaj" action="#{aplikacijaKontroler.dodajAvioKompaniju()}"/>
+                    </p:panel>
+                </h:form>
                 <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>
             </ui:define>
         </ui:composition>
