@@ -12,7 +12,7 @@
         <ui:composition template="./template.xhtml">
             <ui:define name="sadrzaj">
                 <p:panel id="zahteviPanel" header="Zahtevi za registraciju">
-                    <p:dataTable value="#{aplikacijaKontroler.neodobreniKorisnici}" var="k">
+                    <p:dataTable value="#{viewKontroler.neodobreniKorisnici}" var="k">
                         <f:facet name="header">Zahtevi za registraciju</f:facet>
                         <p:column headerText="Korisničko ime">
                             #{k.korisnickoIme}
@@ -47,6 +47,41 @@
                             E-mail: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.eMail}"/>
                         </p:panelGrid>
                         <p:commandButton id="novaAvioKompanijaDugme" value="Dodaj" action="#{aplikacijaKontroler.dodajAvioKompaniju()}"/>
+                    </p:panel>
+                </h:form>
+                <h:form>
+                    <p:panel id="promenaPodatakaAvioKompanijePanel" header="Promena podataka avio-kompanije">
+                        <p:dataTable id="promenaPodatakaAvioKompanijeTabela" value="#{viewKontroler.avioKompanije}" var="ak" editable="true" editMode="row">
+                            <p:ajax event="rowEdit" listener="#{viewKontroler.promenaPodatakaAvioKompanije}"/>
+                            <p:column headerText="Ime" sortBy="#{ak.ime}">
+                                <p:cellEditor>
+                                    <f:facet name="output">#{ak.ime}</f:facet>
+                                    <f:facet name="input"><p:inputText value="#{ak.ime}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Adresa" sortBy="#{ak.adresa}">
+                                <p:cellEditor>
+                                    <f:facet name="output">#{ak.adresa}</f:facet>
+                                    <f:facet name="input"><p:inputText value="#{ak.adresa}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Država" sortBy="#{ak.drzava}">
+                                <p:cellEditor>
+                                    <f:facet name="output">#{ak.drzava}</f:facet>
+                                    <f:facet name="input"><p:inputText value="#{ak.drzava}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Vebsajt" sortBy="#{ak.vebsajt}">
+                                <p:cellEditor>
+                                    <f:facet name="output">#{ak.vebsajt}</f:facet>
+                                    <f:facet name="input"><p:inputText value="#{ak.vebsajt}"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column style="width: 50px" headerText="Izmena">
+                                <p:rowEditor/>
+                            </p:column>
+                        </p:dataTable>
+<!--                        <p:commandButton id="promenaPodatakaAvioKompanijeDugme" value="Dodaj" action="#{d}"/>-->
                     </p:panel>
                 </h:form>
                 <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>

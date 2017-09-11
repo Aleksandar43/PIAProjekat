@@ -57,7 +57,7 @@
                         </p:selectOneRadio>
                         Datum rođenja: <p:calendar value="#{aplikacijaKontroler.poljaZaRegistraciju.datumRodjenja}" pattern="dd.MM.yyyy." required="true" requiredMessage="Datum rođenja nije unet"/>
                         Avio-kompanija: <p:selectOneMenu value="#{aplikacijaKontroler.poljaZaRegistraciju.idKompanije}">
-                            <c:forEach items="#{aplikacijaKontroler.avioKompanije}" var="a">
+                            <c:forEach items="#{viewKontroler.avioKompanije}" var="a">
                                 <f:selectItem itemValue="#{a.id}" itemLabel="#{a.ime}"/> 
                             </c:forEach>
                         </p:selectOneMenu>

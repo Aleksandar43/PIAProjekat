@@ -158,22 +158,6 @@ public class AplikacijaKontroler {
         return "administrator";
     }
     
-    public List<AvioKompanija> getAvioKompanije(){
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Query query=session.createSQLQuery("select * from aviokompanija order by ime").addEntity(AvioKompanija.class);
-        List list = query.list();
-        session.close();
-        return list;
-    }
-    
-    public List<Korisnik> getNeodobreniKorisnici(){
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Query query=session.createSQLQuery("select * from korisnik where odobren=0").addEntity(Korisnik.class);
-        List list = query.list();
-        session.close();
-        return list;
-    }
-    
     public String dodajAerodrom(){
         Session session=HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
