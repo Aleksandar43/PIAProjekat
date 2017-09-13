@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <head>
         <title>Stranica za administratore</title>
     </head>
@@ -27,20 +28,20 @@
                 </p:panel>
                 <h:form>
                     <p:panel id="noviAerodromPanel" header="Dodavanje aerodroma">
-                        <p:panelGrid id="noviAerodromDataGrid" columns="2">
-                            IATA kod: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.iataKod}" required="true" maxlength="3"/>
-                            Naziv: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.naziv}" required="true"/>
-                            Grad: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.grad}" required="true"/>
-                            Država: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.drzava}" required="true"/>
-                            Broj pisti: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.brojPisti}" required="true"/>
+                        <p:panelGrid id="noviAerodromPanelGrid" columns="2">
+                            IATA kod: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.iataKod}" required="true" requiredMessage="IATA kod nije popunjen" maxlength="3"/>
+                            Naziv: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.naziv}" required="true" requiredMessage="Naziv nije popunjen"/>
+                            Grad: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.grad}" required="true" requiredMessage="Grad nije popunjen"/>
+                            Država: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.drzava}" required="true" requiredMessage="Država nije popunjena"/>
+                            Broj pisti: <p:inputText value="#{aplikacijaKontroler.noviAerodrom.brojPisti}" required="true" requiredMessage="Broj pisti nije popunjen"/>
                         </p:panelGrid>
                         <p:commandButton id="noviAerodromDugme" value="Dodaj" action="#{aplikacijaKontroler.dodajAerodrom()}"/>
                     </p:panel>
                 </h:form>
                 <h:form>
                     <p:panel id="novaAvioKompanijaPanel" header="Dodavanje avio-kompanije">
-                        <p:panelGrid id="novaAvioKompanijaDataGrid" columns="2">
-                            Ime: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.ime}" required="true"/>
+                        <p:panelGrid id="novaAvioKompanijaPanelGrid" columns="2">
+                            Ime: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.ime}" required="true" requiredMessage="Ime nije popunjeno"/>
                             Adresa: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.adresa}"/>
                             Država: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.drzava}"/>
                             Vebsajt: <p:inputText value="#{aplikacijaKontroler.novaAvioKompanija.vebsajt}"/>
@@ -81,7 +82,19 @@
                                 <p:rowEditor/>
                             </p:column>
                         </p:dataTable>
-<!--                        <p:commandButton id="promenaPodatakaAvioKompanijeDugme" value="Dodaj" action="#{d}"/>-->
+                    </p:panel>
+                </h:form>
+                <h:form>
+                    <p:panel id="dodavanjeLicenciPanel" header="Dodavanje licenci">
+                        <p:panelGrid id="dodavanjeLicenciDataGrid" columns="2">
+                            Pilot: <p:selectOneMenu value="#{aplikacijaKontroler.novaLicenca.idPilota}">
+                                <c:forEach items="#{viewKontroler.piloti}" var="p">
+                                    <f:selectItem itemValue="#{p.id}" itemLabel="#{p.imeIPrezime}"/>
+                                </c:forEach>
+                            </p:selectOneMenu>
+                            Licenca: <p:inputMask mask="aa9999999" value="#{aplikacijaKontroler.novaLicenca.brojLicence}" required="true" requiredMessage="Nije popunjena licenca" />
+                        </p:panelGrid>
+                        <p:commandButton id="dodavanjeLicenciDugme" value="Dodaj" action="#{aplikacijaKontroler.dodavanjeLicence()}"/>
                     </p:panel>
                 </h:form>
                 <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>

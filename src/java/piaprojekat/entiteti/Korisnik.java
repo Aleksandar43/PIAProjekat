@@ -137,4 +137,8 @@ public class Korisnik implements Serializable {
     public String toString() {
         return "Korisnik{" + "id=" + id + ", korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + ", ime=" + ime + ", prezime=" + prezime + ", pol=" + pol + ", datumRodjenja=" + datumRodjenja + ", eMail=" + eMail + ", tip=" + tip + ", idKompanije=" + idKompanije + ", odobren=" + odobren + '}';
     }
+    
+    public String getImeIPrezime(){
+        return ime+" "+prezime;
+    }
 }

@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import piaprojekat.entiteti.Aerodrom;
 import piaprojekat.entiteti.AvioKompanija;
 import piaprojekat.entiteti.Korisnik;
+import piaprojekat.entiteti.Licenca;
 import piaprojekat.util.HibernateUtil;
 
 /**
@@ -34,6 +35,7 @@ public class AplikacijaKontroler {
     private int brojGresakaKodRegistracije=0;
     private Aerodrom noviAerodrom=new Aerodrom();
     private AvioKompanija novaAvioKompanija=new AvioKompanija();
+    private Licenca novaLicenca=new Licenca();
     public AplikacijaKontroler() {
     }
 
@@ -59,6 +61,14 @@ public class AplikacijaKontroler {
 
     public void setNovaAvioKompanija(AvioKompanija novaAvioKompanija) {
         this.novaAvioKompanija = novaAvioKompanija;
+    }
+
+    public Licenca getNovaLicenca() {
+        return novaLicenca;
+    }
+
+    public void setNovaLicenca(Licenca novaLicenca) {
+        this.novaLicenca = novaLicenca;
     }
     
     public String registracija(){
@@ -194,6 +204,23 @@ public class AplikacijaKontroler {
             novaAvioKompanija.seteMail("");
         } else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Avio-kompanija \""+novaAvioKompanija.getIme()+"\" već postoji u bazi", "Avio-kompanija \""+novaAvioKompanija.getIme()+"\" već postoji u bazi"));
+        }
+        session.close();
+        return "administrator";
+    }
+    
+    public String dodavanjeLicence(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        novaLicenca.setBrojLicence(novaLicenca.getBrojLicence().toUpperCase());
+        Query provera=session.createSQLQuery("select * from licenca where broj_licence='"+novaLicenca.getBrojLicence()+"'");
+        if (provera.uniqueResult()==null) {
+            session.save(novaLicenca);
+            session.getTransaction().commit();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Licenca uspešno dodata", "Licenca uspešno dodata"));
+            novaLicenca.setBrojLicence("");
+        } else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Licenca \""+novaLicenca.getBrojLicence()+"\" već postoji u bazi", "Licenca \""+novaLicenca.getBrojLicence()+"\" već postoji u bazi"));
         }
         session.close();
         return "administrator";

@@ -7,9 +7,10 @@ package piaprojekat.kontroleri;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.hibernate.HibernateException;
+import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.primefaces.event.RowEditEvent;
@@ -24,7 +25,7 @@ import piaprojekat.util.HibernateUtil;
 @ManagedBean
 @ViewScoped
 public class ViewKontroler implements Serializable{
-    private List<Korisnik> neodobreniKorisnici;
+    private List<Korisnik> neodobreniKorisnici,piloti;
     private List<AvioKompanija> avioKompanije;
     public ViewKontroler() {
     }
@@ -51,6 +52,17 @@ public class ViewKontroler implements Serializable{
         return neodobreniKorisnici;
     }
     
+    public List<Korisnik> getPiloti(){
+        if (piloti==null) {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createSQLQuery("select * from korisnik where tip='pilot'").addEntity(Korisnik.class);
+            List list = query.list();
+            session.close();
+            piloti=list;
+        }
+        return piloti;
+    }
+    
     public void promenaPodatakaAvioKompanije(RowEditEvent e){
         AvioKompanija ak=(AvioKompanija)e.getObject();
         Session session=HibernateUtil.getSessionFactory().openSession();
@@ -58,5 +70,6 @@ public class ViewKontroler implements Serializable{
         session.update(ak);
         session.getTransaction().commit();
         session.close();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Podaci uspešno promenjeni", "Podaci uspešno promenjeni"));
     }
 }

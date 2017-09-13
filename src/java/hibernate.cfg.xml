@@ -49,9 +49,10 @@ Contributor(s):
     <property name="hibernate.connection.CharSet">utf8</property>
     <property name="hibernate.connection.characterEncoding">utf8</property>
     <property name="hibernate.connection.useUnicode">true</property>
-<!--    <property name="hbm2ddl.auto">update</property>-->
+    <!--    <property name="hbm2ddl.auto">update</property>-->
     <mapping class="piaprojekat.entiteti.Korisnik"/>
     <mapping class="piaprojekat.entiteti.AvioKompanija"/>
     <mapping class="piaprojekat.entiteti.Aerodrom"/>
+    <mapping class="piaprojekat.entiteti.Licenca"/>
   </session-factory>
 </hibernate-configuration>
