@@ -97,6 +97,59 @@
                         <p:commandButton id="dodavanjeLicenciDugme" value="Dodaj" action="#{aplikacijaKontroler.dodavanjeLicence()}"/>
                     </p:panel>
                 </h:form>
+                <h:form>
+                    <p:panel id="noviLetPanel" header="Dodavanje leta">
+                        <p:wizard>
+                            <p:tab id="letTab1" title="Osnovni podaci">
+                                <p:panelGrid columns="2">
+                                    Polazni aerodrom: <p:selectOneMenu value="#{aplikacijaKontroler.noviLet.polazniAerodrom}" required="true" requiredMessage="Polazni aerodrom nije izabran">
+                                        <c:forEach items="#{viewKontroler.aerodromi}" var="a">
+                                            <f:selectItem itemValue="#{a.iataKod}" itemLabel="#{a.IATAKodINaziv}"/>
+                                        </c:forEach>
+                                    </p:selectOneMenu>
+                                    Polazni terminal: <p:inputText value="#{aplikacijaKontroler.noviLet.polazniTerminal}" required="true" requiredMessage="Polazni terminal nije popunjen"/>
+                                    Polazni gejt: <p:inputText value="#{aplikacijaKontroler.noviLet.polazniGejt}" required="true" requiredMessage="Polazni gejt nije popunjen"/>
+                                    Odredišni aerodrom: <p:selectOneMenu value="#{aplikacijaKontroler.noviLet.odredisniAerodrom}" required="true" requiredMessage="Odredišni aerodrom nije izabran">
+                                        <c:forEach items="#{viewKontroler.aerodromi}" var="b">
+                                            <f:selectItem itemValue="#{b.iataKod}" itemLabel="#{b.IATAKodINaziv}"/>
+                                        </c:forEach>
+                                    </p:selectOneMenu>
+                                    Odredišni terminal: <p:inputText value="#{aplikacijaKontroler.noviLet.odredisniTerminal}" required="true" requiredMessage="Odredišni terminal nije popunjen"/>
+                                    Odredišni gejt: <p:inputText value="#{aplikacijaKontroler.noviLet.odredisniGejt}" required="true" requiredMessage="Odredišni gejt nije popunjen"/>
+                                    Kompanija: <p:selectOneMenu value="#{aplikacijaKontroler.noviLet.idKompanije}" required="true" requiredMessage="Kompanija nije izabrana">
+                                        <c:forEach items="#{viewKontroler.avioKompanije}" var="ak">
+                                            <f:selectItem itemValue="#{ak.id}" itemLabel="#{ak.ime}"/>
+                                        </c:forEach>
+                                        <p:ajax update="noviLetAvioni"/>
+                                    </p:selectOneMenu>
+                                    Avion: <p:selectOneMenu id="noviLetAvioni" value="#{aplikacijaKontroler.noviLet.idAviona}" required="true" requiredMessage="Avion nije izabran">
+                                        <c:forEach items="#{viewKontroler.avioniKompanije}" var="av">
+                                            <f:selectItem itemValue="#{av.id}" itemLabel="#{av.naziv}"/>
+                                        </c:forEach>
+                                    </p:selectOneMenu>
+                                    Standardna dužina trajanja: <p:inputText value="#{aplikacijaKontroler.noviLet.standardnaDuzinaTrajanja}" required="true" requiredMessage="Standardna dužina trajanja nije popunjena"/>
+                                    Vreme poletanja: <p:calendar value="#{aplikacijaKontroler.noviLet.vremePoletanja}" pattern="dd.MM.yyyy. HH:mm" required="true" requiredMessage="Vreme poletanja nije uneto"/>
+                                </p:panelGrid>
+                                <p:selectBooleanCheckbox value="#{aplikacijaKontroler.noviLetCarter}" label="Čarter" id="carterCheckbox"/> <p:outputLabel for="carterCheckbox" value="Čarter"/>
+                            </p:tab>
+                            <p:tab id="letTab2" title="Radarski centri">
+
+                            </p:tab>
+                            <p:tab id="letTab3" title="Posada">
+                                <p:panelGrid columns="2">
+                                    Pilot: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.pilot}" required="true"/>
+                                    Kopilot: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.kopilot}" required="true"/>
+                                    Stjuardesa 1: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa1}" required="true"/>
+                                    Stjuardesa 2: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa2}" required="true"/>
+                                    Stjuardesa 3: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa3}" required="true"/>
+                                    Stjuardesa 4: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa4}" required="false"/>
+                                    Stjuardesa 5: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa5}" required="false"/>
+                                </p:panelGrid>
+                                <p:commandButton value="Dodaj" action="#{aplikacijaKontroler.dodajLet()}"/>
+                            </p:tab>
+                        </p:wizard>
+                    </p:panel>
+                </h:form>
                 <h:form><p:commandLink value="Odjava" action="#{korisnikKontroler.logout()}"/></h:form>
             </ui:define>
         </ui:composition>

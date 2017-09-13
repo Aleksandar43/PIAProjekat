@@ -54,5 +54,9 @@ Contributor(s):
     <mapping class="piaprojekat.entiteti.AvioKompanija"/>
     <mapping class="piaprojekat.entiteti.Aerodrom"/>
     <mapping class="piaprojekat.entiteti.Licenca"/>
+    <mapping class="piaprojekat.entiteti.Let"/>
+    <mapping class="piaprojekat.entiteti.Avion"/>
+    <mapping class="piaprojekat.entiteti.RadarskiCentar"/>
+    <mapping class="piaprojekat.entiteti.LetPosada"/>
   </session-factory>
 </hibernate-configuration>

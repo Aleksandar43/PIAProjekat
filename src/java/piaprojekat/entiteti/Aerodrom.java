@@ -70,4 +70,8 @@ public class Aerodrom implements Serializable {
     public String toString() {
         return "Aerodrom{" + "iataKod=" + iataKod + ", naziv=" + naziv + ", grad=" + grad + ", drzava=" + drzava + ", brojPisti=" + brojPisti + '}';
     }
+    
+    public String getIATAKodINaziv(){
+        return iataKod+" - "+naziv;
+    }
 }

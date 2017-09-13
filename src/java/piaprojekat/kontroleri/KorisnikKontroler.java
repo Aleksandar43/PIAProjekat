@@ -19,10 +19,6 @@ import org.primefaces.context.RequestContext;
 import piaprojekat.entiteti.Korisnik;
 import piaprojekat.util.HibernateUtil;
 
-/**
- *
- * @author Aleksandar
- */
 @ManagedBean
 @SessionScoped
 public class KorisnikKontroler implements Serializable{

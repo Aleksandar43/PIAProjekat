@@ -21,13 +21,12 @@ import org.hibernate.Session;
 import piaprojekat.entiteti.Aerodrom;
 import piaprojekat.entiteti.AvioKompanija;
 import piaprojekat.entiteti.Korisnik;
+import piaprojekat.entiteti.Let;
+import piaprojekat.entiteti.LetPosada;
 import piaprojekat.entiteti.Licenca;
+import piaprojekat.entiteti.RadarskiCentar;
 import piaprojekat.util.HibernateUtil;
 
-/**
- *
- * @author Aleksandar
- */
 @ManagedBean
 @ApplicationScoped
 public class AplikacijaKontroler {
@@ -36,6 +35,10 @@ public class AplikacijaKontroler {
     private Aerodrom noviAerodrom=new Aerodrom();
     private AvioKompanija novaAvioKompanija=new AvioKompanija();
     private Licenca novaLicenca=new Licenca();
+    private Let noviLet=new Let();
+    private boolean noviLetCarter;
+    private List<RadarskiCentar> noviLetRadarskiCentri=new ArrayList<>();
+    private LetPosada noviLetPosada=new LetPosada();
     public AplikacijaKontroler() {
     }
 
@@ -69,6 +72,38 @@ public class AplikacijaKontroler {
 
     public void setNovaLicenca(Licenca novaLicenca) {
         this.novaLicenca = novaLicenca;
+    }
+
+    public Let getNoviLet() {
+        return noviLet;
+    }
+
+    public void setNoviLet(Let noviLet) {
+        this.noviLet = noviLet;
+    }
+
+    public boolean isNoviLetCarter() {
+        return noviLetCarter;
+    }
+
+    public List<RadarskiCentar> getNoviLetRadarskiCentri() {
+        return noviLetRadarskiCentri;
+    }
+
+    public void setNoviLetRadarskiCentri(List<RadarskiCentar> noviLetRadarskiCentri) {
+        this.noviLetRadarskiCentri = noviLetRadarskiCentri;
+    }
+
+    public void setNoviLetCarter(boolean noviLetCarter) {
+        this.noviLetCarter = noviLetCarter;
+    }
+
+    public LetPosada getNoviLetPosada() {
+        return noviLetPosada;
+    }
+
+    public void setNoviLetPosada(LetPosada noviLetPosada) {
+        this.noviLetPosada = noviLetPosada;
     }
     
     public String registracija(){
@@ -222,6 +257,32 @@ public class AplikacijaKontroler {
         } else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Licenca \""+novaLicenca.getBrojLicence()+"\" već postoji u bazi", "Licenca \""+novaLicenca.getBrojLicence()+"\" već postoji u bazi"));
         }
+        session.close();
+        return "administrator";
+    }
+    
+    public String dodajLet(){
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(noviLet);
+        session.save(noviLetPosada);
+        if(!noviLetCarter){
+            Let ekstraLet = noviLet;
+            LetPosada ekstraLetPosada=noviLetPosada;
+            while(true){
+                Date vremePoletanjaStaro = ekstraLet.getVremePoletanja();
+                Calendar c=Calendar.getInstance();
+                c.setTime(vremePoletanjaStaro);
+                c.add(Calendar.DATE, 7);
+                Date vremePoletanjaNovo = c.getTime();
+                if(vremePoletanjaNovo.getMonth()!=vremePoletanjaStaro.getMonth()) break;
+                ekstraLet.setVremePoletanja(vremePoletanjaNovo);
+                ekstraLet.setId(ekstraLet.getId()+1);
+                ekstraLetPosada.setIdLet(ekstraLet.getId());
+                session.save(ekstraLet);
+            }
+        }
+        session.getTransaction().commit();
         session.close();
         return "administrator";
     }

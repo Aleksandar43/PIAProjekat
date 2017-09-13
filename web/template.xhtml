@@ -18,7 +18,6 @@
     <body>
         <h:form>
             <p:menubar>
-                <p:menuitem value="Levo"/>
                 <f:facet name="options">
                     <p:commandButton class="menidugmad" value="Prijava" onclick="PF('prijavaDijalog').show()" rendered="#{korisnikKontroler.korisnik==null}"/>
                     <p:commandButton class="menidugmad" value="Registracija" onclick="PF('registracijaDijalog').show()" rendered="#{korisnikKontroler.korisnik==null}"/>
@@ -36,7 +35,7 @@
                     Lozinka: <p:password value="#{korisnikKontroler.lozinkaPrijava}" required="true" requiredMessage="Lozinka nije popunjena" id="lozinka"/>
                     <p:message for="lozinka" id="poruka_l"/>
                     <p:row>
-                        <p:message id="greska" for="prijavaDugme" showDetail="true" showSummary="true"/>
+                        
                     </p:row>
                     <p:row>
                         <p:commandButton update="greska poruka_k poruka_l" value="Prijava" actionListener="#{korisnikKontroler.prijava}" action="#{korisnikKontroler.login()}" oncomplete="handleLoginRequest(xhr, status, args)" id="prijavaDugme"/>
