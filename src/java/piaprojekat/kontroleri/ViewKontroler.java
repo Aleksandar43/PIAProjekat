@@ -23,10 +23,11 @@ import piaprojekat.util.HibernateUtil;
 @ManagedBean
 @ViewScoped
 public class ViewKontroler implements Serializable{
-    private List<Korisnik> neodobreniKorisnici,piloti;
+    private List<Korisnik> neodobreniKorisnici,piloti,stjuardese;
     private List<AvioKompanija> avioKompanije;
     private List<Aerodrom> aerodromi;
     private List<Avion> avioni;
+    private AvioKompanija trenutnaAvioKompanija;
     public ViewKontroler() {
     }
     
@@ -63,6 +64,17 @@ public class ViewKontroler implements Serializable{
         return piloti;
     }
     
+    public List<Korisnik> getStjuardese(){
+        if (stjuardese==null) {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createSQLQuery("select * from korisnik where tip='stjuardesa'").addEntity(Korisnik.class);
+            List list = query.list();
+            session.close();
+            stjuardese=list;
+        }
+        return stjuardese;
+    }
+    
     public List<Aerodrom> getAerodromi(){
         if (aerodromi==null) {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -77,7 +89,7 @@ public class ViewKontroler implements Serializable{
     public List<Avion> getAvioniKompanije(){
         if (avioni==null) {
             Session session = HibernateUtil.getSessionFactory().openSession();
-            Query query = session.createSQLQuery("select * from avioni join aviokompanije where avioni.id_vlasnika=aviokompanije.id").addEntity(Avion.class);
+            Query query = session.createSQLQuery("SELECT * from avion").addEntity(Avion.class);
             List list = query.list();
             session.close();
             avioni=list;
@@ -93,5 +105,9 @@ public class ViewKontroler implements Serializable{
         session.getTransaction().commit();
         session.close();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Podaci uspešno promenjeni", "Podaci uspešno promenjeni"));
+    }
+    
+    public void promenaTAK(){
+        
     }
 }

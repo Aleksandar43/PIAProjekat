@@ -5,10 +5,15 @@
  */
 package piaprojekat.entiteti;
 
+import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class LetPosada {
+@Entity(name="let_posada")
+@Table(name="let_posada")
+public class LetPosada implements Serializable {
     @Id
     @Column(name = "id_let")
     private int idLet;

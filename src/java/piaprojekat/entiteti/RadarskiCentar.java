@@ -6,8 +6,12 @@
 package piaprojekat.entiteti;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity(name="radarski_centar")
+@Table(name="radarski_centar")
 public class RadarskiCentar {
     @Id
     private String id;

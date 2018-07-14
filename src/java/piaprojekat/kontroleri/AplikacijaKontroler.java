@@ -284,6 +284,7 @@ public class AplikacijaKontroler {
         }
         session.getTransaction().commit();
         session.close();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Let uspešno dodat", "Let uspešno dodat"));
         return "administrator";
     }
 }

@@ -7,8 +7,12 @@ package piaprojekat.entiteti;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table
 public class Avion implements Serializable{
     @Id
     private int id;

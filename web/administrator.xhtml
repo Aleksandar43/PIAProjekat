@@ -120,7 +120,7 @@
                                         <c:forEach items="#{viewKontroler.avioKompanije}" var="ak">
                                             <f:selectItem itemValue="#{ak.id}" itemLabel="#{ak.ime}"/>
                                         </c:forEach>
-                                        <p:ajax update="noviLetAvioni"/>
+                                        <p:ajax update="noviLetAvioni" listener="#{viewKontroler.promenaTAK()}"/>
                                     </p:selectOneMenu>
                                     Avion: <p:selectOneMenu id="noviLetAvioni" value="#{aplikacijaKontroler.noviLet.idAviona}" required="true" requiredMessage="Avion nije izabran">
                                         <c:forEach items="#{viewKontroler.avioniKompanije}" var="av">
@@ -137,13 +137,29 @@
                             </p:tab>
                             <p:tab id="letTab3" title="Posada">
                                 <p:panelGrid columns="2">
-                                    Pilot: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.pilot}" required="true"/>
-                                    Kopilot: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.kopilot}" required="true"/>
-                                    Stjuardesa 1: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa1}" required="true"/>
-                                    Stjuardesa 2: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa2}" required="true"/>
-                                    Stjuardesa 3: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa3}" required="true"/>
-                                    Stjuardesa 4: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa4}" required="false"/>
-                                    Stjuardesa 5: <p:inputText value="#{aplikacijaKontroler.noviLetPosada.stjuardesa5}" required="false"/>
+                                    Pilot: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.pilot}" required="true">
+                                        <f:selectItems value="#{viewKontroler.piloti}" var="p" itemLabel="#{p.imeIPrezime}" itemValue="#{p.id}"/>
+                                    </p:selectOneMenu>
+                                    Kopilot: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.kopilot}" required="true">
+                                        <f:selectItems value="#{viewKontroler.piloti}" var="p" itemLabel="#{p.imeIPrezime}" itemValue="#{p.id}"/>
+                                    </p:selectOneMenu>
+                                    Stjuardesa 1: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.stjuardesa1}" required="true">
+                                        <f:selectItems value="#{viewKontroler.stjuardese}" var="s" itemLabel="#{s.imeIPrezime}" itemValue="#{s.id}"/>
+                                    </p:selectOneMenu>
+                                    Stjuardesa 2: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.stjuardesa2}" required="true">
+                                        <f:selectItems value="#{viewKontroler.stjuardese}" var="s" itemLabel="#{s.imeIPrezime}" itemValue="#{s.id}"/>
+                                    </p:selectOneMenu>
+                                    Stjuardesa 3: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.stjuardesa3}" required="true">
+                                        <f:selectItems value="#{viewKontroler.stjuardese}" var="s" itemLabel="#{s.imeIPrezime}" itemValue="#{s.id}"/>
+                                    </p:selectOneMenu>
+                                    Stjuardesa 4: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.stjuardesa4}">
+                                        <f:selectItem itemLabel="" itemValue="null"/>
+                                        <f:selectItems value="#{viewKontroler.stjuardese}" var="s" itemLabel="#{s.imeIPrezime}" itemValue="#{s.id}"/>
+                                    </p:selectOneMenu>
+                                    Stjuardesa 5: <p:selectOneMenu value="#{aplikacijaKontroler.noviLetPosada.stjuardesa5}">
+                                        <f:selectItem itemLabel="" itemValue="null"/>
+                                        <f:selectItems value="#{viewKontroler.stjuardese}" var="s" itemLabel="#{s.imeIPrezime}" itemValue="#{s.id}"/>
+                                    </p:selectOneMenu>
                                 </p:panelGrid>
                                 <p:commandButton value="Dodaj" action="#{aplikacijaKontroler.dodajLet()}"/>
                             </p:tab>
